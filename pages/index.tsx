@@ -1,6 +1,65 @@
 import Head from "next/head";
 import Image from "next/image";
+
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend,
+} from "chart.js";
+import { Line } from "react-chartjs-2";
+import faker from "@faker-js/faker";
+
 import styles from "../styles/Home.module.css";
+
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend
+);
+
+const options = {
+  responsive: true,
+  plugins: {
+    legend: {
+      position: "top" as const,
+    },
+    title: {
+      display: true,
+      text: "Team Points per Period",
+    },
+  },
+};
+
+const labels = ["Oct 19-Oct 24", "Oct 25-31", "Nov 1-Nov 7", "Nov 8-Nov 14"];
+
+const data = {
+  labels,
+  datasets: [
+    {
+      label: "Team 1",
+      data: labels.map((element, i) =>
+        faker.datatype.number({ min: -1000, max: 1000 })
+      ),
+      borderColor: "rgb(255, 99, 132)",
+      backgroundColor: "rgba(255, 99, 132, 0.5)",
+    },
+    {
+      label: "Team 2",
+      data: labels.map(() => faker.datatype.number({ min: -1000, max: 1000 })),
+      borderColor: "rgb(53, 162, 235)",
+      backgroundColor: "rgba(53, 162, 235, 0.5)",
+    },
+  ],
+};
 
 export default function Home() {
   return (
@@ -51,6 +110,12 @@ export default function Home() {
           </a>
         </div>
       </main>
+
+      <div className={styles.chartSection}>
+        <div className={styles.chart}>
+          <Line options={options} data={data} />
+        </div>
+      </div>
 
       <footer className={styles.footer}>
         <a
